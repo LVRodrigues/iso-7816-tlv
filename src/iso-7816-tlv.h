@@ -8,6 +8,9 @@
  * @copyright Copyright (c) 2022
  */
 
+#ifndef TLV_H
+#define TLV_H
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -28,6 +31,11 @@ class TLV {
             UNDEFINED,          /**< Classe indefinida. */
             APPLICATION,        /**< Classe de aplicação. */
             CONTEXT_DEPENDENT   /**< Classe de conteúdo de dados complexos. */
+        };
+
+        enum DataObjectType {
+            PRIMITIVE,
+            CONSTRUCTED
         };
 
     private:
@@ -53,10 +61,7 @@ class TLV {
         /**
          * @brief Construtor do objeto TLV.
          */
-        TLV() {
-            tag     = 0;
-            value   = "";
-        }
+        TLV(): tag(0), value("") {}
 
         /**
          * @brief Destrutor do objeto TLV.
@@ -112,3 +117,5 @@ class TLV {
          */
         std::vector<TLV> childrens() { return items; }
 };
+
+#endif              // TLV_H
