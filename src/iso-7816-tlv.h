@@ -82,7 +82,7 @@ class TLV {
          * 
          * @return int32_t Tamanho do campo value, em bytes.
          */
-        int32_t getLength() { return value.size() /2; }
+        int32_t getLength() { return value.size() / 2; }
 
         /**
          * @brief Recupera o campo ::value.

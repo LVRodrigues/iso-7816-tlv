@@ -3,9 +3,13 @@
 
 TEST(TLV, TLV) {
   TLV tlv;
-  tlv.setTag(0x00);
-  tlv.setValue("ababababab");
   EXPECT_EQ(0x00, tlv.getTag());
+  EXPECT_EQ("", tlv.getValue());
+  EXPECT_EQ(0, tlv.getLength());
+
+  tlv.setTag(0x0A);
+  tlv.setValue("ababababab");
+  EXPECT_EQ(0x0A, tlv.getTag());
   EXPECT_EQ("ababababab", tlv.getValue());
   EXPECT_EQ(5, tlv.getLength());
 }
