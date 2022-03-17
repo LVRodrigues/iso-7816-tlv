@@ -12,6 +12,8 @@ TEST(TLV, TLV) {
   EXPECT_EQ(0x0A, tlv.getTag());
   EXPECT_EQ("ababababab", tlv.getValue());
   EXPECT_EQ(5, tlv.getLength());
+
+  EXPECT_ANY_THROW(tlv.setValue("abababababa"));
 }
 
 TEST(TLV, CLASS) {
