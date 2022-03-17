@@ -9,6 +9,7 @@
  */
 
 #include "iso-7816-tlv.h"
+#include <stdexcept>
 
 TLV::Class TLV::getClass() {
     // Não pode ser da classe de aplicativo e de contexto dependente ao mesmo tempo:
@@ -27,7 +28,7 @@ TLV::Class TLV::getClass() {
 
 void TLV::setValue(const std::string value) {
     if (value.length() % 2 != 0) {
-        std::__throw_length_error(std::string("[" + value + "] Tamanho inválido.").c_str());
+        throw new std::length_error("[" + value + "] Tamanho inválido.");
     }
     // TODO: Validar o formato dos dados.
     this->value = value;
