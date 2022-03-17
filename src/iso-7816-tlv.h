@@ -53,7 +53,10 @@ class TLV {
         /**
          * @brief Construtor do objeto TLV.
          */
-        TLV() {}
+        TLV() {
+            tag     = 0;
+            value   = "";
+        }
 
         /**
          * @brief Destrutor do objeto TLV.
@@ -88,7 +91,12 @@ class TLV {
          */
         std::string getValue() { return value; }
 
-        void setValue(std::string value);
+        /**
+         * @brief Atribui o valor para o campo ::value.
+         * 
+         * @param[in] value Valor no formato hexadecimal.
+         */
+        void setValue(const std::string value);
 
         /**
          * @brief Recupera a classe do elemento corrente.
