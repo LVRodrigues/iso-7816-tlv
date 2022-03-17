@@ -28,14 +28,19 @@ class TLV {
          * Valor extraído dos dois primeiros bits do campo tag.
          */
         enum Class {
-            UNDEFINED,          /**< Classe indefinida. */
-            APPLICATION,        /**< Classe de aplicação. */
-            CONTEXT_DEPENDENT   /**< Classe de conteúdo de dados complexos. */
+            UNDEFINED           = 0b00000000,   /**< Classe indefinida. */
+            APPLICATION         = 0b01000000,   /**< Classe de aplicação. */
+            CONTEXT_DEPENDENT   = 0b10000000    /**< Classe de conteúdo de dados complexos. */
         };
 
+        /**
+         * @brief Tipo de dados no elemento TLV.
+         * 
+         * Se não for um tipo construído, será considerado como primitivo.
+         */
         enum DataObjectType {
-            PRIMITIVE,
-            CONSTRUCTED
+            PRIMITIVE       = 0b00000000,       /**< Tipo de dados primitivo (padrao). */
+            CONSTRUCTED     = 0b00100000        /**< Tipo de dados complexo, construindo vários elementos. */
         };
 
     private:

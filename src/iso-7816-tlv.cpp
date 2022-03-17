@@ -10,31 +10,15 @@
 
 #include "iso-7816-tlv.h"
 
-/**
- * @brief Máscara para identificar uma tag da classe de aplicativos.
- */
-const int APPLICATION_CLASS_MASK = 0b01000000;
-
-/**
- * @brief Máscara para identificar uma tag dependente de contexto.
- */
-const int CONTEXT_DEPENDENT_CLASS_MASK = 0b10000000;
-
-/**
- * @brief Máscara para identificar se uma tag informa que o elemento é um tipo de dados complexo.
- * 
- * Caso não seja um tipo complexo, é considerado um tipo primitivo.
- */
-const int CONSTRUCTED_DATA_OBJECT = 0b00100000;
-
 TLV::Class TLV::getClass() {
     // Não pode ser da classe de aplicativo e de contexto dependente ao mesmo tempo:
-    if (    ((tag & APPLICATION_CLASS_MASK) == APPLICATION_CLASS_MASK)
-        &   ((tag & CONTEXT_DEPENDENT_CLASS_MASK) == CONTEXT_DEPENDENT_CLASS_MASK)) {
+    // Quando ocorrer, será considerado como tipo Indefinido.
+    if (    ((tag & Class::APPLICATION) == Class::APPLICATION)
+        &   ((tag & Class::CONTEXT_DEPENDENT) == Class::CONTEXT_DEPENDENT)) {
         return Class::UNDEFINED;
-    } else if ((tag & APPLICATION_CLASS_MASK) == APPLICATION_CLASS_MASK) {
+    } else if ((tag & Class::APPLICATION) == Class::APPLICATION) {
         return Class::APPLICATION;
-    } else if ((tag & CONTEXT_DEPENDENT_CLASS_MASK) == CONTEXT_DEPENDENT_CLASS_MASK) {
+    } else if ((tag & Class::CONTEXT_DEPENDENT) == Class::CONTEXT_DEPENDENT) {
         return Class::CONTEXT_DEPENDENT;
     }
     // Se não caiu em nenhuma condição acima, é da classe indefinida.
@@ -43,7 +27,7 @@ TLV::Class TLV::getClass() {
 
 void TLV::setValue(const std::string value) {
     if (value.length() % 2 != 0) {
-        std::__throw_invalid_argument("Tamanho inválido.");
+        std::__throw_length_error(std::string("[" + value + "] Tamanho inválido.").c_str());
     }
     // TODO: Validar o formato dos dados.
     this->value = value;
