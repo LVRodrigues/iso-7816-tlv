@@ -29,3 +29,13 @@ TEST(TLV, CLASS) {
   tlv.setTag(0XCF);
   EXPECT_EQ(TLV::Class::UNDEFINED, tlv.getClass());
 }
+
+TEST(TLV, DATA_OBJECT) {
+  TLV tlv;
+  
+  tlv.setTag(0x4B);
+  EXPECT_EQ(TLV::DataObject::PRIMITIVE, tlv.getDataObject());
+
+  tlv.setTag(0x6B);
+  EXPECT_EQ(TLV::DataObject::CONSTRUCTED, tlv.getDataObject());
+}

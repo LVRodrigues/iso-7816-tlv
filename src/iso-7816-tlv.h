@@ -38,7 +38,7 @@ class TLV {
          * 
          * Se não for um tipo construído, será considerado como primitivo.
          */
-        enum DataObjectType {
+        enum DataObject {
             PRIMITIVE       = 0b00000000,       /**< Tipo de dados primitivo (padrao). */
             CONSTRUCTED     = 0b00100000        /**< Tipo de dados complexo, construindo vários elementos. */
         };
@@ -114,6 +114,13 @@ class TLV {
          * @return ::Class
          */
         Class getClass();
+
+        /**
+         * @brief Recupera o tipo de objetos registrado para o elemento TLV.
+         * 
+         * @return ::DataObject 
+         */
+        DataObject getDataObject();
 
         /**
          * @brief Recupera um conjunto de elementos filhos.

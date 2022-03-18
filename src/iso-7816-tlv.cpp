@@ -11,6 +11,14 @@
 #include "iso-7816-tlv.h"
 #include <stdexcept>
 
+void TLV::setValue(const std::string value) {
+    if (value.length() % 2 != 0) {
+        throw new std::length_error("[" + value + "] Tamanho inválido.");
+    }
+    // TODO: Validar o formato dos dados.
+    this->value = value;
+}
+
 TLV::Class TLV::getClass() {
     // Não pode ser da classe de aplicativo e de contexto dependente ao mesmo tempo:
     // Quando ocorrer, será considerado como tipo Indefinido.
@@ -26,10 +34,10 @@ TLV::Class TLV::getClass() {
     return Class::UNDEFINED;
 }
 
-void TLV::setValue(const std::string value) {
-    if (value.length() % 2 != 0) {
-        throw new std::length_error("[" + value + "] Tamanho inválido.");
+TLV::DataObject TLV::getDataObject() {
+    // Se não for um tipo construído (complexo) é um tipo primitivo.
+    if ((tag & DataObject::CONSTRUCTED) == DataObject::CONSTRUCTED) {
+        return DataObject::CONSTRUCTED;
     }
-    // TODO: Validar o formato dos dados.
-    this->value = value;
+    return DataObject::PRIMITIVE;
 }
