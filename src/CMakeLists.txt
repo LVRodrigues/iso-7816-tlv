@@ -1,4 +1,5 @@
 add_library(iso-7816-tlv SHARED 
+    utils.cpp
     iso-7816-tlv.cpp
     iso-7816-tlv-parser.cpp)   
 

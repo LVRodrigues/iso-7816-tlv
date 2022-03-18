@@ -10,3 +10,22 @@
  */
 
 #include "iso-7816-tlv-parser.h"
+#include "utils.h"
+
+std::vector<TLV> TLVParser::parse(std::string data) {
+    std::vector<uint8_t> buffer = Utils::hex2bytes(data);
+    return parse(buffer);
+}
+
+std::vector<TLV> TLVParser::parse(const char* data, size_t length) {
+    std::vector<uint8_t> buffer;
+    for (size_t i = 0; i < length; i++) {
+        buffer.push_back(data[i]);
+    }
+    return parse(buffer);
+}
+
+std::vector<TLV> TLVParser::parse(std::vector<uint8_t> data) {
+    std::vector<TLV> result;
+    return result;
+}

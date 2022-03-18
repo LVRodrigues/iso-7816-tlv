@@ -12,8 +12,8 @@
 #define TLV_H
 
 #include <cstdint>
-#include <string>
 #include <vector>
+#include <string>
 
 /**
  * @brief Tag-Length-Value
@@ -50,9 +50,9 @@ class TLV {
         int32_t tag;
 
         /**
-         * @brief Dados no formato hexadecimal.
+         * @brief Matriz de bytes com os dados do elemento TLV.
          */
-        std::string value;
+        std::vector<uint8_t> value;
 
         /**
          * @brief Elementos filhos.
@@ -66,7 +66,7 @@ class TLV {
         /**
          * @brief Construtor do objeto TLV.
          */
-        TLV(): tag(0), value("") {}
+        TLV(): tag(0) {}
 
         /**
          * @brief Destrutor do objeto TLV.
@@ -92,14 +92,21 @@ class TLV {
          * 
          * @return int32_t Tamanho do campo value, em bytes.
          */
-        int32_t getLength() { return value.size() / 2; }
+        size_t getLength() { return value.size(); }
 
         /**
          * @brief Recupera o campo ::value.
          * 
-         * @return std::string Campo de dados no formato hexadecimal.
+         * @return std::string Matriz de bytes do campo de dados.
          */
-        std::string getValue() { return value; }
+        std::vector<uint8_t> getValue() { return value; }
+
+        /**
+         * @brief Atribui o campo ::value.
+         * 
+         * @param[in] value Matriz de bytes para o campo de dados.
+         */
+        void setValue(std::vector<uint8_t> value);
 
         /**
          * @brief Atribui o valor para o campo ::value.
@@ -107,6 +114,14 @@ class TLV {
          * @param[in] value Valor no formato hexadecimal.
          */
         void setValue(const std::string value);
+
+        /**
+         * @brief Atribui o valor para o campo ::value.
+         * 
+         * @param[in] buffer 
+         * @param[in] length 
+         */
+        void setValue(const uint8_t* buffer, size_t length);
 
         /**
          * @brief Recupera a classe do elemento corrente.

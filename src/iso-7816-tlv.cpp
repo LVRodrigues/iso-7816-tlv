@@ -9,14 +9,21 @@
  */
 
 #include "iso-7816-tlv.h"
-#include <stdexcept>
+#include "utils.h"
+
+void TLV::setValue(std::vector<uint8_t> value) {
+    this->value = value;
+}
 
 void TLV::setValue(const std::string value) {
-    if (value.length() % 2 != 0) {
-        throw new std::length_error("[" + value + "] Tamanho inválido.");
+    this->value = Utils::hex2bytes(value);
+}
+
+void TLV::setValue(const uint8_t* buffer, size_t length) {
+    this->value.clear();
+    for (size_t i = 0; i < length; i++) {
+        this->value.push_back(buffer[i]);
     }
-    // TODO: Validar o formato dos dados.
-    this->value = value;
 }
 
 TLV::Class TLV::getClass() {
