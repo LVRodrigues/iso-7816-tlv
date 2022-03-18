@@ -18,6 +18,7 @@
  * @brief Analisador de elementos no protocolo TLV.
  */
 class TLVParser {
+
     public:
         /**
          * @brief Analisa um fluxo de bytes no formato hexadecimal e extrai elementos
@@ -35,7 +36,7 @@ class TLVParser {
          * @param[in] length Tamanho da matriz de bytes.
          * @return std::vector<TLV> 
          */
-        static std::vector<TLV> parse(const char* data, size_t length);
+        static std::vector<TLV> parse(const uint8_t* data, size_t length);
 
         /**
          * @brief Analiza um fluxo de bytes e extrai elementos no formato TLV.

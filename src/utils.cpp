@@ -34,6 +34,7 @@ std::vector<uint8_t> Utils::hex2bytes(std::string hex) {
     if (hex.size() % 2 != 0) {
         throw new std::length_error("Tamanho inválido para o formato hexadecimal");
     }
+    result.reserve(hex.length() / 2);
     for (unsigned int i = 0; i < hex.length(); i += 2) {
         std::string byteString = hex.substr(i, 2);
         uint8_t byte = (uint8_t) strtol(byteString.c_str(), NULL, 16);

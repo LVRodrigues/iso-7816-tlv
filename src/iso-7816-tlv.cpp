@@ -21,6 +21,7 @@ void TLV::setValue(const std::string value) {
 
 void TLV::setValue(const uint8_t* buffer, size_t length) {
     this->value.clear();
+    this->value.reserve(length);
     for (size_t i = 0; i < length; i++) {
         this->value.push_back(buffer[i]);
     }

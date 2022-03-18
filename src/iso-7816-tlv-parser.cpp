@@ -17,8 +17,9 @@ std::vector<TLV> TLVParser::parse(std::string data) {
     return parse(buffer);
 }
 
-std::vector<TLV> TLVParser::parse(const char* data, size_t length) {
+std::vector<TLV> TLVParser::parse(const uint8_t* data, size_t length) {
     std::vector<uint8_t> buffer;
+    buffer.reserve(length);
     for (size_t i = 0; i < length; i++) {
         buffer.push_back(data[i]);
     }
