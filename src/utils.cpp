@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iomanip>
 #include <stdexcept>
+#include <algorithm>
 
 std::string Utils::bytes2hex(uint8_t *buffer, size_t length) {
     std::stringstream ss;

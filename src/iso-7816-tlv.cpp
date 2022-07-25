@@ -9,21 +9,11 @@
  */
 
 #include "iso-7816-tlv.h"
-#include "utils.h"
+#include <utils.h>
 
-void TLV::setValue(std::vector<uint8_t> value) {
-    this->value = value;
-}
-
-void TLV::setValue(const std::string value) {
-    this->value = Utils::hex2bytes(value);
-}
-
-void TLV::setValue(const uint8_t* buffer, size_t length) {
-    this->value.clear();
-    this->value.reserve(length);
-    for (size_t i = 0; i < length; i++) {
-        this->value.push_back(buffer[i]);
+TLV::~TLV() {
+    for (TLV* children : _childrens) {
+        delete children;
     }
 }
 
@@ -48,4 +38,19 @@ TLV::DataObject TLV::getDataObject() {
         return DataObject::CONSTRUCTED;
     }
     return DataObject::PRIMITIVE;
+}
+
+TLV* TLVFinder::find(std::vector<TLV*> items, int32_t tag) {
+    for (TLV* tlv: items) {
+        if (tlv->getTag() == tag) {
+            return tlv;
+        }
+        if (!tlv->childrens()->empty()) {
+            TLV *result = TLVFinder::find(*tlv->childrens(), tag);
+            if (result) {
+                return result;
+            }
+        }
+    }
+    return nullptr;
 }

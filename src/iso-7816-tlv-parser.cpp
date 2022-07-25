@@ -10,11 +10,10 @@
  */
 
 #include "iso-7816-tlv-parser.h"
-#include "utils.h"
-
+#include <utils.h>
 #include <bit>
-#include <byteswap.h>
 #include <cstring>
+#include <byteswap.h>
 
 /**
  * @brief Máscara para identificar se a tag continua para o próximo byte.
@@ -33,12 +32,12 @@ const uint8_t LENGTH_MORE_1 = 0x81;
  */
 const uint8_t LENGTH_MORE_2 = 0x82;
 
-std::vector<TLV> TLVParser::parse(std::string data) {
+std::vector<TLV*> TLVParser::parse(std::string data) {
     std::vector<uint8_t> buffer = Utils::hex2bytes(data);
     return parse(buffer);
 }
 
-std::vector<TLV> TLVParser::parse(const uint8_t* data, size_t length) {
+std::vector<TLV*> TLVParser::parse(const uint8_t* data, size_t length) {
     std::vector<uint8_t> buffer;
     buffer.reserve(length);
     for (size_t i = 0; i < length; i++) {
@@ -47,8 +46,8 @@ std::vector<TLV> TLVParser::parse(const uint8_t* data, size_t length) {
     return parse(buffer);
 }
 
-std::vector<TLV> TLVParser::parse(std::vector<uint8_t> data) {
-    std::vector<TLV> result;
+std::vector<TLV*> TLVParser::parse(std::vector<uint8_t> data) {
+    std::vector<TLV*> result;
     // Matriz vazia não será processada:
     if (data.empty()) {
         return result;
@@ -56,20 +55,26 @@ std::vector<TLV> TLVParser::parse(std::vector<uint8_t> data) {
     // Transformando a matriz de bytes em uma fila para facilitar o processamento:
     std::queue<uint8_t> queue;
     for (uint8_t byte : data) {
-        queue.push(byte);
+        queue.emplace(byte);
     }
     // Processando a matriz de bytes:
     do {
-        TLV tlv;
+        TLV* tlv = new TLV();
         uint32_t tag    = TLVParser::parseTag(queue);
         uint32_t length = TLVParser::parseLength(queue);
 
-        tlv.setTag(tag);
+        tlv->setTag(tag);
+        tlv->value()->reserve(length);
         for (int i = 0; i < length; i++) {
-            tlv.getValue().push_back(queue.front());
+            tlv->value()->push_back(queue.front());
             queue.pop();
         }
         result.push_back(tlv);
+        if (tlv->getDataObject() == TLV::DataObject::CONSTRUCTED) {
+            std::vector<TLV*> childrens = parse(*tlv->value());
+            tlv->childrens()->reserve(childrens.size());
+            tlv->childrens()->assign(childrens.begin(), childrens.end());
+        }
     } while (!queue.empty());
     return result;
 }
