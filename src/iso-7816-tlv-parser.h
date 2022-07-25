@@ -1,6 +1,6 @@
 /**
  * @file iso-7816-tlv-parser.h
- * @author $Author$
+ * @author $AuthorName$
  * @brief Analisador de elementos no protoclo TLV.
  * @version 1.0
  * @date 2022-03-17
@@ -12,6 +12,7 @@
 #define TLV_PARSER_H
 
 #include "iso-7816-tlv.h"
+#include <cstdint>
 #include <vector>
 #include <queue>
 
@@ -50,26 +51,26 @@ class TLVParser {
          * no formato TLV.
          * 
          * @param[in] data Bytes no formato hexadecimal.
-         * @return std::vector<TLV> 
+         * @return std::vector<TLV*> 
          */
-        static std::vector<TLV> parse(std::string data);
+        static std::vector<TLV*> parse(std::string data);
 
         /**
          * @brief Analiza um fluxo de bytes e extrai elementos no formato TLV.
          * 
          * @param[in] data Matriz de bytes.
          * @param[in] length Tamanho da matriz de bytes.
-         * @return std::vector<TLV> 
+         * @return std::vector<TLV*> 
          */
-        static std::vector<TLV> parse(const uint8_t* data, size_t length);
+        static std::vector<TLV*> parse(const uint8_t* data, size_t length);
 
         /**
          * @brief Analiza um fluxo de bytes e extrai elementos no formato TLV.
          * 
          * @param[in] data Matriz de bytes.
-         * @return std::vector<TLV> 
+         * @return std::vector<TLV*> 
          */
-        static std::vector<TLV> parse(std::vector<uint8_t> data);
+        static std::vector<TLV*> parse(std::vector<uint8_t> data);
 };
 
 #endif              // TLV_PARSER_H

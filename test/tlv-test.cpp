@@ -4,15 +4,17 @@
 TEST(TLV, TLV) {
   TLV tlv;
   EXPECT_EQ(0x00, tlv.getTag());
-  EXPECT_TRUE(tlv.getValue().empty());
-  EXPECT_EQ(0, tlv.getLength());
+  EXPECT_TRUE(tlv.value()->empty());
+  EXPECT_EQ(0, tlv.length());
+
+  std::vector<uint8_t> base{0xab, 0xab, 0xab, 0xab, 0xab};
 
   tlv.setTag(0x0A);
-  tlv.setValue("ab ab ab ab ab");
+  tlv.value()->assign(base.begin(), base.end());
   EXPECT_EQ(0x0A, tlv.getTag());
-  EXPECT_EQ(5, tlv.getLength());
+  EXPECT_EQ(5, tlv.length());
 
-  EXPECT_ANY_THROW(tlv.setValue("abababababa"));
+  EXPECT_ANY_THROW(tlv.value());
 }
 
 TEST(TLV, CLASS) {
